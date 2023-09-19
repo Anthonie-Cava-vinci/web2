@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 
-const FILM = [
+const FILMS = [
     {
         id:1,
         title:"50 shades of grey",
@@ -31,7 +31,7 @@ const FILM = [
 // Read all the pizzas from the menu
 router.get('/', (req, res, next) => {
     console.log('GET /films');
-    res.json(FILM);
+    res.json(FILMS);
   });
 
   module.exports = router;
