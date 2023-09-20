@@ -28,24 +28,6 @@ const FILMS = [
 
 ]
 
-// Read all the films
-router.get('/', (req, res, next) => {
-    console.log('GET /films');
-    res.json(FILMS);
-});
-
-//Read the films identified by id
-router.get('/:id', (req, res) =>{
-    console.log(`GET /films/${req.params.id}`);
-
-    const filmsIndex = FILMS.findIndex((film) => film.id == req.params.id);
-
-    if(filmsIndex < 0)
-    return res.sendStatus(404);
-
-    res.json(FILMS[filmsIndex]);
-});
-
 // Read all the films, filtered by minimum-duration if the query param exists
 router.get('/', (req, res) => {
     // Extraction du paramètre 'minimum-duration' de la requête en tant que nombre
@@ -65,6 +47,21 @@ router.get('/', (req, res) => {
     // Envoi de la liste filtrée en réponse à la requête
     res.json(filmsReachingMinimumDuration);
   });
+  
+
+//Read the films identified by id
+router.get('/:id', (req, res) =>{
+    console.log(`GET /films/${req.params.id}`);
+
+    const filmsIndex = FILMS.findIndex((film) => film.id == req.params.id);
+
+    if(filmsIndex < 0)
+    return res.sendStatus(404);
+
+    res.json(FILMS[filmsIndex]);
+});
+
+  
   
   
 
