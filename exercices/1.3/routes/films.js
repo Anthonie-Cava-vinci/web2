@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 
-const FILMS = [
+const films = [
     {
         id:1,
         title:"50 shades of grey",
@@ -53,17 +53,35 @@ router.get('/', (req, res) => {
 router.get('/:id', (req, res) =>{
     console.log(`GET /films/${req.params.id}`);
 
-    const filmsIndex = FILMS.findIndex((film) => film.id == req.params.id);
+    const filmsIndex = films.findIndex((film) => film.id == req.params.id);
 
     if(filmsIndex < 0)
     return res.sendStatus(404);
 
-    res.json(FILMS[filmsIndex]);
+    res.json(films[filmsIndex]);
 });
 
-  
-  
-  
+//Create a film
+router.post('/',(req,res)=>{
+  const title = req?.body?.title?.lenght !== 0 ? req.body.title : undefined;
+  const duration = typeof req?.body?.duration !== 'number' ? undefined : req.body.duration;
+  const budget = typeof req?.body?.budget !== 'number' ? undefined : req.body.budget;
+  const link = req?.body?.link?.lenght !== 0 ? req.body.link : undefined;
+
+  console.log('POST /films');
+  if(!title || !duration || !budget || !link){
+    return res.sendStatus(400);
+  }
+
+  const lastItemIndex = films?.length !== 0 ? films.length - 1 : undefined;
+  const lastId = lastItemIndex !== undefined ? films[lastItemIndex]?.id : 0;
+  const nextId = lastId + 1;
 
 
-  module.exports = router;
+  const filmsCreated = {
+    id : nextId, title,duration,budget,link
+  }
+  films.push(filmsCreated);
+})
+
+module.exports = router;

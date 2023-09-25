@@ -1,0 +1,21 @@
+@baseUrl = http://localhost:3000
+
+GET {{baseUrl}}/films
+
+### Read all films with minimum-duration of 100min
+GET {{baseUrl}}/films/?minimum-duration=600 
+
+
+### Find film by ID
+GET {{baseUrl}}/films/2
+
+### Create a film
+POST {{baseUrl}}/films
+Content-Type: application/json
+
+{
+    "title":"Je sais pas",
+    "duration":13,
+    "budget":0.99,
+    "link":"https://www.allocine.fr/film/fichefilm_gen_cfilm=291385.html"
+}
