@@ -33,10 +33,12 @@ router.get('/', (req, res) => {
     // Extraction du paramètre 'minimum-duration' de la requête en tant que nombre
     const minimumFilmDuration = Number(req.query['minimum-duration']);
   
-    // Vérification si 'minimumFilmDuration' n'est pas un nombre valide ou est inférieur ou égal à zéro
-    if (isNaN(minimumFilmDuration) || minimumFilmDuration <= 0) {
-      // Si la condition est vraie, renvoie un message d'erreur
-      return res.json('Wrong minimum duration');
+    if(typeof minimumFilmDuration !== 'number' || minimumFilmDuration <=0){
+      return res.sendStatus(400);
+    }
+
+    if(!minimumFilmDuration){
+      return res.json(films);
     }
   
     // Filtrage des films pour ne garder que ceux dont la durée est supérieure ou égale à 'minimumFilmDuration'
@@ -63,13 +65,17 @@ router.get('/:id', (req, res) =>{
 
 //Create a film
 router.post('/',(req,res)=>{
-  const title = req?.body?.title?.lenght !== 0 ? req.body.title : undefined;
+  const title = req?.body?.title?.trim()?.length !== 0 ? req.body.title : undefined;
   const duration = typeof req?.body?.duration !== 'number' ? undefined : req.body.duration;
   const budget = typeof req?.body?.budget !== 'number' ? undefined : req.body.budget;
-  const link = req?.body?.link?.lenght !== 0 ? req.body.link : undefined;
+  const link = req?.body?.link?.trim()?.length !== 0 ? req.body.link : undefined;
 
   console.log('POST /films');
-  if(!title || !duration || !budget || !link){
+  if (!title || !link || !duration || !budget) return res.sendStatus(400);
+
+  const findFilm = films.find((films) => films.title.toLocaleLowerCase() === title.toLocaleLowerCase());
+
+  if(findFilm){
     return res.sendStatus(400);
   }
 
@@ -84,5 +90,9 @@ router.post('/',(req,res)=>{
   films.push(filmsCreated);
   return res.json(filmsCreated);
 })
+
+
+
+
 
 module.exports = router;
