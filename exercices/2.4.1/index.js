@@ -13,21 +13,16 @@ button.addEventListener('click', clickHandler);
 
 function startCounter() {
   startTime = new Date();
-  timerReference = setTimeout(printLoss, maxTime * 1000);
+  timerReference = setTimeout(()=>alert(`Game over, you did not click ${expectedClicks} times within ${maxTime}s !`), maxTime * 1000);
 }
 
 function clickHandler() {
-  currentClicks++;
+  ++currentClicks;
   if (currentClicks === expectedClicks) {
     clearTimeout(timerReference);
     const timeSpent = new Date().getTime() - startTime.getTime();
     button.style.display = 'none';
-    alert(`You win ! you clicked ${expectedClicks} times within ${timeSpent}s!`);
+    alert(`You win ! you clicked ${expectedClicks} times within ${timeSpent}ms!`);
   }
 }
 
-function printLoss() {
-  timeOutID = setTimeout(() => {
-    alert(`Game over, you did not click ${expectedClicks} times within ${maxTime}s !`);
-  })
-}
